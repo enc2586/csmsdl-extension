@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "COURSEMOS PDF Downloader",
+  "name": "CSMSDL",
   "version": "1.0.0",
   "description": "Download COURSEMOS PDF documents with a single click",
   "permissions": [
