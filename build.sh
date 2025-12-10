@@ -27,14 +27,20 @@ if [ -f "$OUTPUT_FILE" ]; then
     rm "$OUTPUT_FILE"
 fi
 
-# Create zip package
 echo "Creating package..."
 zip -r "$OUTPUT_FILE" . \
     -x "*.git*" \
     -x "*.DS_Store" \
     -x "README.md" \
+    -x "RELEASE_NOTES.md" \
+    -x "SCREENSHOT_GUIDE.md" \
+    -x "SUBMISSION_GUIDE.md" \
+    -x "store_description.md" \
     -x "build.sh" \
     -x "dist/*" \
+    -x "screenshots/*" \
+    -x "promotional_images/*" \
+    -x "icons/icon.png" \
     -x "*.zip"
 
 echo -e "${GREEN}✓ Package created: $OUTPUT_FILE${NC}"

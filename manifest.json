@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CSMSDL",
   "version": "1.0.0",
-  "description": "Download COURSEMOS PDF documents with a single click",
+  "description": "Download PDF documents with a single click",
   "permissions": [
     "activeTab",
     "downloads"
