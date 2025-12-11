@@ -37,7 +37,7 @@ git clone [repository-url]
    ```bash
    ./build.sh
    ```
-   `dist/` 폴더에 `csmsdl-extension-vX.X.X.zip` 파일이 생성됩니다.
+   `dist/` 폴더에 `csmsplus-vX.X.X.zip` 파일이 생성됩니다.
 
 2. **확장 프로그램 로드 (개발자 모드)**:
    - Chrome 주소창에 `chrome://extensions` 입력
