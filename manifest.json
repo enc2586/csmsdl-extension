@@ -8,7 +8,7 @@
     "storage"
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "src/background/background.js"
   },
   "host_permissions": [
     "https://lms.gist.ac.kr/*",
@@ -20,11 +20,11 @@
         "https://lms.gist.ac.kr/local/ubdoc/*"
       ],
       "js": [
-        "pdf-lib.min.js",
-        "content.js"
+        "src/features/pdf-downloader/pdf-lib.min.js",
+        "src/features/pdf-downloader/content.js"
       ],
       "css": [
-        "styles.css"
+        "src/features/pdf-downloader/styles.css"
       ]
     },
     {
@@ -32,15 +32,15 @@
         "https://lms.gist.ac.kr/course/view.php*"
       ],
       "js": [
-        "tracker-config.js",
-        "tracker-utils.js",
-        "tracker-api.js",
-        "tracker-ui.js",
-        "tracker-dashboard.js",
-        "tracker-main.js"
+        "src/features/assignment-tracker/content-scripts/tracker-config.js",
+        "src/features/assignment-tracker/content-scripts/tracker-utils.js",
+        "src/features/assignment-tracker/content-scripts/tracker-api.js",
+        "src/features/assignment-tracker/content-scripts/tracker-ui.js",
+        "src/features/assignment-tracker/content-scripts/tracker-dashboard.js",
+        "src/features/assignment-tracker/content-scripts/tracker-main.js"
       ],
       "css": [
-        "assignment-styles.css"
+        "src/features/assignment-tracker/styles/assignment-styles.css"
       ]
     },
     {
@@ -49,10 +49,10 @@
         "https://lms.gist.ac.kr/index.php*"
       ],
       "js": [
-        "course-list-parser.js"
+        "src/features/assignment-tracker/content-scripts/course-list-parser.js"
       ],
       "css": [
-        "course-stats-styles.css"
+        "src/features/assignment-tracker/styles/course-stats-styles.css"
       ]
     },
     {
@@ -60,13 +60,13 @@
         "https://lms.gist.ac.kr/mod/assign/view.php*"
       ],
       "js": [
-        "assignment-cache-updater.js"
+        "src/features/assignment-tracker/content-scripts/assignment-cache-updater.js"
       ]
     }
   ],
   "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
   }
 }

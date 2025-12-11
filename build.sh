@@ -40,7 +40,7 @@ zip -r "$OUTPUT_FILE" . \
     -x "dist/*" \
     -x "screenshots/*" \
     -x "promotional_images/*" \
-    -x "icons/icon.png" \
+    -x "assets/icons/icon.png" \
     -x "*.zip"
 
 echo -e "${GREEN}✓ Package created: $OUTPUT_FILE${NC}"
