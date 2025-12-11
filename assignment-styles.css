@@ -14,9 +14,23 @@
   width: auto;
 }
 
-/* Assignment Status Row - Chip and Deadline on same line */
+/* Assignment Info Link - wraps all assignment info */
+.assignment-info-link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.assignment-info-link:hover .assignment-deadline-text {
+  text-decoration: underline;
+}
+
+/* Assignment Status Row - Chip and Deadline on same line (horizontal) */
 .assignment-status-row {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 8px;
   animation: fadeIn 0.3s ease-out;
@@ -62,8 +76,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3px 8px;
-  /* Slightly larger padding */
+  padding: 2px 8px;
+  /* Reduced vertical padding for smaller height */
   font-size: 11px;
   font-weight: 500;
   border-radius: 4px;
@@ -104,18 +118,6 @@
   font-size: 12px;
 }
 
-/* Deadline Link */
-.assignment-deadline-link {
-  color: #444;
-  font-size: 12px;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.assignment-deadline-link:hover {
-  color: #1976d2;
-  text-decoration: underline;
-}
 
 /* Loading State */
 .assignment-loading {
@@ -483,9 +485,8 @@
   text-align: center;
 }
 
-/* Override default container margin for compact layout */
-.course_box_current .assignment-info-container {
-  margin-left: 0;
-  display: block;
-  text-align: center;
+/* Override for assignments in course overview section - remove left margin and center */
+.course_box0 .assignment-info-container {
+  margin-left: 0 !important;
+  margin-top: 0 !important;
 }

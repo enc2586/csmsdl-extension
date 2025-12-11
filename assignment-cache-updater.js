@@ -6,6 +6,29 @@
 
   console.log('Assignment Cache Updater loaded');
 
+  // Helper: Parse Date string
+  function parseDate(dateStr) {
+    if (!dateStr) return null;
+    try {
+      // 1. Try YYYY-MM-DD HH:MM
+      let matches = dateStr.match(/(\d{4})-(\d{1,2})-(\d{1,2})\s+(\d{1,2}):(\d{1,2})/);
+      if (matches) {
+        return new Date(matches[1], matches[2] - 1, matches[3], matches[4], matches[5]);
+      }
+
+      // 2. Try Korean format
+      matches = dateStr.match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일.*(\d{1,2}):(\d{1,2})/);
+      if (matches) {
+        return new Date(matches[1], matches[2] - 1, matches[3], matches[4], matches[5]);
+      }
+
+      return null;
+    } catch (e) {
+      console.error('Date parsing error:', e);
+      return null;
+    }
+  }
+
   // Helper: Extract assignment ID from URL
   function getAssignmentId() {
     const params = new URLSearchParams(window.location.search);
@@ -60,7 +83,26 @@
       return;
     }
 
-    const isSubmitted = submissionStatus && (submissionStatus.includes('제출함') || submissionStatus.includes('제출 완료'));
+    // Check if this assignment requires online submission
+    const noSubmissionRequired = submissionStatus && submissionStatus.includes('온라인 제출물을 요구하지 않습니다');
+
+    let isSubmitted;
+    if (noSubmissionRequired) {
+      // For assignments that don't require submission:
+      // - Before deadline: treat as not submitted (미제출)
+      // - After deadline: treat as submitted (제출함)
+      const parsedDueDate = parseDate(dueDate);
+      if (parsedDueDate) {
+        const now = new Date();
+        isSubmitted = now > parsedDueDate;
+      } else {
+        // If no due date, treat as not submitted
+        isSubmitted = false;
+      }
+    } else {
+      // Normal logic: check for '제출함' or '제출 완료' in submission status
+      isSubmitted = submissionStatus && (submissionStatus.includes('제출함') || submissionStatus.includes('제출 완료'));
+    }
 
     // Extract assignment title - use specific selector
     const titleElement = document.querySelector('#region-main > div > h2');

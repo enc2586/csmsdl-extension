@@ -155,11 +155,6 @@
         // Calculate remaining time if not submitted and deadline is in the future
         const remainingTime = (!isSubmitted && dueDate && dueDate > now) ? calculateTimeRemaining(dueDate) : '';
 
-        // Make deadline clickable if URL provided
-        const deadlineHtml = assignmentUrl
-            ? `<a href="${assignmentUrl}" class="assignment-deadline-link">${formattedDeadline}${remainingTime}</a>`
-            : `<span class="assignment-deadline-text">${formattedDeadline}${remainingTime}</span>`;
-
         // Check if we should show content
         chrome.storage.local.get(['showAssignmentContent'], (result) => {
             const showContent = result.showAssignmentContent !== undefined ? result.showAssignmentContent : true;
@@ -167,15 +162,30 @@
                 ? `<div class="assignment-content-preview">${content}</div>`
                 : '';
 
-            container.innerHTML = `
-              <div class="assignment-status-row">
-                <div class="assignment-status-chip ${chipClass}">
-                  ${chipText}
-                </div>
-                ${deadlineHtml}
-              </div>
-              ${contentHtml}
-            `;
+            // Wrap everything in a link if assignmentUrl is provided
+            if (assignmentUrl) {
+                container.innerHTML = `
+                  <a href="${assignmentUrl}" class="assignment-info-link">
+                    <div class="assignment-status-row">
+                      <div class="assignment-status-chip ${chipClass}">
+                        ${chipText}
+                      </div>
+                      <div class="assignment-deadline-text">${formattedDeadline}${remainingTime}</div>
+                    </div>
+                    ${contentHtml}
+                  </a>
+                `;
+            } else {
+                container.innerHTML = `
+                  <div class="assignment-status-row">
+                    <div class="assignment-status-chip ${chipClass}">
+                      ${chipText}
+                    </div>
+                    <div class="assignment-deadline-text">${formattedDeadline}${remainingTime}</div>
+                  </div>
+                  ${contentHtml}
+                `;
+            }
         });
     }
 
@@ -298,8 +308,27 @@
 
             const submissionStatus = getValueByHeader('제출 여부');
             const dueDate = getValueByHeader('종료 일시');
-            // '제출함' in some contexts, '제출 완료' in others. Checking both or common '제출' word might be too broad (could be '제출 안 함').
-            const isSubmitted = submissionStatus && (submissionStatus.includes('제출함') || submissionStatus.includes('제출 완료'));
+
+            // Check if this assignment requires online submission
+            const noSubmissionRequired = submissionStatus && submissionStatus.includes('온라인 제출물을 요구하지 않습니다');
+
+            let isSubmitted;
+            if (noSubmissionRequired) {
+                // For assignments that don't require submission:
+                // - Before deadline: treat as not submitted (미제출)
+                // - After deadline: treat as submitted (제출함)
+                const parsedDueDate = parseDate(dueDate);
+                if (parsedDueDate) {
+                    const now = new Date();
+                    isSubmitted = now > parsedDueDate;
+                } else {
+                    // If no due date, treat as not submitted
+                    isSubmitted = false;
+                }
+            } else {
+                // Normal logic: check for '제출함' or '제출 완료' in submission status
+                isSubmitted = submissionStatus && (submissionStatus.includes('제출함') || submissionStatus.includes('제출 완료'));
+            }
 
             // Extract assignment title - use specific selector
             const titleElement = doc.querySelector('#region-main > div > h2');
