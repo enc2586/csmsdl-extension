@@ -19,6 +19,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .assignment-content-preview {
@@ -29,6 +40,21 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  animation: fadeInDown 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 50px;
+    margin-top: 2px;
+  }
 }
 
 /* Status Chip */
@@ -165,6 +191,7 @@
   margin-bottom: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #eee;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .stat-item {
@@ -266,6 +293,7 @@
   padding: 20px 0;
   color: #666;
   font-size: 13px;
+  animation: fadeIn 0.3s ease-out;
 }
 
 /* Settings Button */
@@ -291,6 +319,35 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+/* Dashboard Updating Notice */
+.dashboard-updating-notice {
+  font-size: 11px;
+  color: #999;
+  font-style: italic;
+  padding: 4px 0;
+  margin-bottom: 8px;
+  animation: slideDownFadeIn 0.3s ease-out;
+  overflow: hidden;
+}
+
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 30px;
+    margin-bottom: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
 }
 
 /* Modal Overlay */
@@ -390,40 +447,44 @@
   font-size: 11px;
   color: #999;
   line-height: 1.3;
-}/* Compact Assignment Layout (for course overview section) */
+  animation: fadeInDown 0.3s ease-out;
+}
+
+/* Compact Assignment Layout (for course overview section) */
 .assignment-compact-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    margin-top: 2px;
-    text-decoration: none;
-    transition: opacity 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  text-decoration: none;
+  transition: opacity 0.2s;
 }
 
 .assignment-compact-link:hover {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
 .assignment-compact-chip {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 8px;
-    font-size: 11px;
-    font-weight: 500;
-    border-radius: 4px;
-    line-height: 1.2;
-    border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  line-height: 1.2;
+  border: none;
 }
 
 .assignment-compact-remaining {
-    font-size: 10px;
-    color: #999;
-    text-align: center;
+  font-size: 10px;
+  color: #999;
+  text-align: center;
 }
+
 /* Override default container margin for compact layout */
-#section-0 .assignment-info-container {
+.course_box_current .assignment-info-container {
   margin-left: 0;
   display: block;
   text-align: center;
