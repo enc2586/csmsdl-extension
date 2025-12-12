@@ -564,3 +564,61 @@ input[type="number"]:focus {
   background-color: rgba(211, 47, 47, 0.2);
   border-color: #ff5252;
 }
+
+/* Patch Notes */
+.patch-note-item {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.patch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 12px;
+}
+
+.patch-version {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.patch-date {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-family: monospace;
+}
+
+.patch-summary {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-color);
+}
+
+.patch-changes {
+  list-style: none;
+  padding: 0;
+}
+
+.patch-changes li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.patch-changes li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: var(--text-secondary);
+}
