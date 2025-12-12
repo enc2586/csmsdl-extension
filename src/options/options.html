@@ -24,6 +24,18 @@
             </svg>
           </span> Options
         </li>
+        <li class="nav-item" data-tab="patch-notes">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </span> Patch Notes
+        </li>
         <li class="nav-item" data-tab="about">
           <span class="icon">
             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"
@@ -180,6 +192,14 @@
         </div>
       </div>
 
+      <!-- Patch Notes Tab -->
+      <div id="tab-patch-notes" class="tab-content">
+        <h1>Patch Notes</h1>
+        <div id="patch-notes-list" class="patch-notes-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
       <!-- About Tab -->
       <div id="tab-about" class="tab-content">
         <h1>About</h1>
@@ -189,7 +209,7 @@
             <h2>CSMS+</h2>
             <p class="version">v<span id="version-number">2.0.0</span></p>
           </div>
-          <p class="description">GIST LMS를 더 편하게 만들어드려요.</p>
+          <p class="description">GIST LMS를 더 편리하게 만들어드립니다.</p>
 
           <div class="links">
             <a href="https://github.com/enc2586/csmsplus" target="_blank" class="link-btn">

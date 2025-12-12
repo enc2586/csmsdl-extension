@@ -82,3 +82,8 @@ function base64ToBlob(base64, mimeType) {
 }
 
 console.log('COURSEMOS PDF Downloader background service worker loaded');
+
+// Open Options Page when extension icon is clicked
+chrome.action.onClicked.addListener(() => {
+    chrome.runtime.openOptionsPage();
+});

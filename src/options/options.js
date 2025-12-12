@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSettings();
     setupEventListeners();
     setVersion();
+    loadPatchNotes();
 
     // Set Copyright Year
     const yearSpan = document.getElementById('copyright-year');
@@ -219,4 +220,40 @@ function updateTimePreviews() {
 
     if (preview1) preview1.textContent = `≈ ${msToNaturalLanguage(ttl)}`;
     if (preview2) preview2.textContent = `≈ ${msToNaturalLanguage(ttlSub)}`;
+}
+
+// Load Patch Notes
+async function loadPatchNotes() {
+    const listContainer = document.getElementById('patch-notes-list');
+    if (!listContainer) return;
+
+    try {
+        const response = await fetch('patch_notes.json');
+        const notes = await response.json();
+
+        let html = '';
+        notes.forEach(note => {
+            const changesHtml = note.changes.map(change => `<li>${change}</li>`).join('');
+
+            html += `
+                <div class="patch-note-item">
+                    <div class="patch-header">
+                        <span class="patch-version">${note.version}</span>
+                        <span class="patch-date">${note.date}</span>
+                    </div>
+                    <div class="patch-body">
+                        <p class="patch-summary">${note.summary}</p>
+                        <ul class="patch-changes">
+                            ${changesHtml}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        });
+
+        listContainer.innerHTML = html;
+    } catch (error) {
+        console.error('Failed to load patch notes:', error);
+        listContainer.innerHTML = '<p class="error">패치 노트를 불러올 수 없습니다.</p>';
+    }
 }
