@@ -255,21 +255,45 @@
     }
 
     // Render stats on course card
-    function renderCourseStats(courseDiv, stats, courseId, isLoading = false) {
-        // Remove existing stats if any
-        const existing = courseDiv.querySelector('.course-assignment-stats');
-        if (existing) {
-            existing.remove();
+    function renderCourseStats(courseDiv, stats, courseId, isLoading = false, progress = 0) {
+        let statsContainer = courseDiv.querySelector('.course-assignment-stats');
+
+        if (!statsContainer) {
+            statsContainer = document.createElement('a');
+            statsContainer.className = 'course-assignment-stats';
+            statsContainer.href = `https://lms.gist.ac.kr/course/view.php?id=${courseId}`;
+            courseDiv.appendChild(statsContainer);
         }
 
-        const statsContainer = document.createElement('a');
-        statsContainer.className = 'course-assignment-stats';
-        statsContainer.href = `https://lms.gist.ac.kr/course/view.php?id=${courseId}`;
-
         if (isLoading) {
-            statsContainer.innerHTML = `
-              <div class="stats-loading">불러오는 중...</div>
-            `;
+            // Circular Progress
+            const radius = 12;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (progress * circumference);
+            const percentage = Math.round(progress * 100);
+
+            // Determine color based on progress (optional, or static)
+            const strokeColor = '#4a90e2';
+
+            // Check if ring already exists to update in-place (prevents animation flicker)
+            const existingRing = statsContainer.querySelector('.progress-ring-circle');
+            const existingText = statsContainer.querySelector('.progress-text');
+
+            if (existingRing && existingText) {
+                existingRing.style.strokeDashoffset = offset;
+                existingText.textContent = `${percentage}%`;
+            } else {
+                statsContainer.innerHTML = `
+                  <div class="progress-ring-container">
+                    <svg class="progress-ring-svg">
+                      <circle class="progress-ring-circle-bg" cx="16" cy="16" r="${radius}"></circle>
+                      <circle class="progress-ring-circle" cx="16" cy="16" r="${radius}" 
+                              style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset}; stroke: ${strokeColor};"></circle>
+                    </svg>
+                    <div class="progress-text">${percentage}%</div>
+                  </div>
+                `;
+            }
         } else {
             // Add 'has-urgent' class if urgent count > 0
             const urgentClass = stats.urgent > 0 ? 'stat-urgent has-urgent' : 'stat-urgent';
@@ -289,20 +313,17 @@
               </div>
             `;
         }
-
-        courseDiv.appendChild(statsContainer);
     }
 
     // Process a single course
     async function processCourse(courseId, courseDiv) {
         // console.log(`[Processing] Course ${courseId} - START`);
 
-        // Show loading state
-        renderCourseStats(courseDiv, { completed: 0, urgent: 0, remaining: 0 }, courseId, true);
+        // Initial Loading State (0%)
+        renderCourseStats(courseDiv, { completed: 0, urgent: 0, remaining: 0 }, courseId, true, 0);
 
         // Fetch assignment list (Rate Limited)
         const assignments = await enqueueFetch(() => fetchCourseAssignments(courseId));
-        // console.log(`[Course ${courseId}] Fetched ${assignments.length} assignment links`);
 
         if (assignments.length === 0) {
             renderCourseStats(courseDiv, { completed: 0, urgent: 0, remaining: 0 }, courseId, false);
@@ -311,6 +332,17 @@
 
         // Check cache for each assignment
         const cacheKeys = assignments.map(a => `assignment_${a.id}`);
+        const totalAssignments = assignments.length;
+        let processedCount = 0;
+
+        // Update progress helper
+        const updateProgress = () => {
+            const progress = totalAssignments > 0 ? processedCount / totalAssignments : 0;
+            renderCourseStats(courseDiv, {}, courseId, true, progress);
+        };
+
+        // 10% progress just for fetching list
+        // updateProgress(); // Don't jump too fast
 
         chrome.storage.local.get(cacheKeys, async (result) => {
             const cachedData = [];
@@ -329,16 +361,17 @@
 
                 if (isValid) {
                     cachedData.push(cached);
+                    processedCount++;
                 } else {
                     missingOrInvalid.push(assignment);
                 }
             });
 
-            // console.log(`[Course ${courseId}] Valid Cache: ${cachedData.length}, Missing/Invalid: ${missingOrInvalid.length}`);
+            // Update progress after checking cache
+            updateProgress();
 
             // Fetch missing assignments
             for (const assignment of missingOrInvalid) {
-                // console.log(`[Course ${courseId}] Fetching details for ${assignment.id}...`);
                 // Rate limited fetch
                 const data = await enqueueFetch(() => fetchAssignmentDetails(assignment.url, assignment.id, courseId));
 
@@ -348,6 +381,9 @@
                     const cacheKey = `assignment_${assignment.id}`;
                     chrome.storage.local.set({ [cacheKey]: data });
                 }
+
+                processedCount++;
+                updateProgress();
             }
 
             // Calculate and render stats with ALL data

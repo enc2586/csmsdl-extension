@@ -18,12 +18,12 @@
     text-decoration: none;
     color: inherit;
     opacity: 0;
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: fadeInCentered 0.4s ease-out forwards;
     transition: opacity 0.2s;
 }
 
-/* Fade in animation */
-@keyframes fadeIn {
+/* Container Fade in animation */
+@keyframes fadeInCentered {
     from {
         opacity: 0;
         transform: translateY(-50%) translateX(10px);
@@ -32,6 +32,19 @@
     to {
         opacity: 1;
         transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* Item Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
@@ -45,6 +58,7 @@
     align-items: center;
     gap: 6px;
     justify-content: flex-end;
+    animation: fadeIn 0.4s ease-out forwards;
 }
 
 .course-assignment-stats .stat-label {
@@ -62,12 +76,55 @@
     text-align: right;
 }
 
-/* Loading state */
+/* Circular Progress Loader */
+.progress-ring-container {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-ring-svg {
+    transform: rotate(-90deg);
+    width: 32px;
+    height: 32px;
+}
+
+.progress-ring-circle-bg {
+    fill: transparent;
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 4;
+}
+
+.progress-ring-circle {
+    fill: transparent;
+    stroke: #e91e63;
+    /* Pink/Red accent to match GIST theme if needed, or blue #4a90e2 */
+    stroke-width: 4;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+    transform-origin: 50% 50%;
+}
+
+.progress-text {
+    position: absolute;
+    font-size: 8px;
+    /* Very small text inside */
+    font-weight: 700;
+    color: #666;
+    text-align: center;
+}
+
+/* Loading state text (fallback) */
 .stats-loading {
     font-size: 11px;
     color: #999;
     font-style: italic;
     white-space: nowrap;
+    display: none;
+    /* Hidden by default if using ring */
 }
 
 /* Color coding for stats */
