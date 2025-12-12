@@ -77,7 +77,6 @@
                     loaded: false
                 };
                 this.state.totalCount++;
-                console.log(`[Dashboard] Register ${id}, Total: ${this.state.totalCount}, Loaded: ${this.state.loadedCount}`);
 
                 // Re-enable loading if new items are added
                 if (this.state.loadedCount < this.state.totalCount) {
@@ -96,7 +95,6 @@
 
             const progress = this.state.totalCount > 0 ? this.state.loadedCount / this.state.totalCount : 0;
             const percentage = Math.min(100, Math.round(progress * 100));
-            console.log(`[Dashboard] Progress: ${this.state.loadedCount}/${this.state.totalCount} = ${percentage}%, IsLoading: ${this.state.isLoading}`);
 
             let bar = container.querySelector('.dashboard-progress-bar');
             if (this.state.isLoading && !bar) {
@@ -147,11 +145,9 @@
                 if (!assignment.loaded) {
                     this.state.assignments[id].loaded = true;
                     this.state.loadedCount++;
-                    console.log(`[Dashboard] Update ${id} LOADED. Count: ${this.state.loadedCount}/${this.state.totalCount}`);
 
                     if (this.state.loadedCount >= this.state.totalCount) {
                         this.state.isLoading = false;
-                        console.log('[Dashboard] Loading Complete');
                     }
 
                     this.updateProgressBar();

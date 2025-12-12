@@ -1,5 +1,15 @@
 [
     {
+        "version": "v2.1.2",
+        "date": "2025-12-13",
+        "summary": "대시보드 로딩 속도 및 진행률 표시줄 개선",
+        "changes": [
+            "[UI] Improved assignment dashboard loading experience",
+            "[UI] Fixed progress bar animation and visibility",
+            "[Fix] Fixed an issue where progress bar could get stuck"
+        ]
+    },
+    {
         "version": "v2.1.1",
         "date": "2025-12-12",
         "summary": "옵션 페이지 UI/UX 개선",
