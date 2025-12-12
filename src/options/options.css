@@ -245,6 +245,13 @@ input[type="number"] {
   width: 120px;
   /* Increased from 100px (1.2x) */
   font-size: 14px;
+  text-align: right;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 input[type="number"]:focus {
@@ -370,6 +377,12 @@ input[type="number"]:focus {
   background-color: var(--accent-hover);
 }
 
+.primary-btn:disabled {
+  background-color: #555;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
 /* About Page */
 .about-card {
   background-color: var(--card-bg);
@@ -492,35 +505,31 @@ input[type="number"]:focus {
   background-color: rgba(255, 165, 0, 0.1);
   border: 1px solid rgba(255, 165, 0, 0.3);
   border-radius: 8px;
-  padding: 24px;
+  padding: 20px;
   margin-bottom: 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
   color: #ffb74d;
 }
 
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
 .warning-icon {
-  margin-bottom: 12px;
   color: #ffb74d;
-  background-color: rgba(255, 165, 0, 0.1);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.warning-text {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .warning-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   color: #ffb74d;
 }

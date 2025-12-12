@@ -168,12 +168,14 @@ function setupEventListeners() {
         input.addEventListener('change', () => {
             elements.saveBar.classList.add('visible');
             elements.saveBar.classList.remove('saved'); // Reset to "Changes detected"
+            elements.saveBtn.disabled = false;
             updateTimePreviews();
         });
         if (input.type === 'number') {
             input.addEventListener('input', () => {
                 elements.saveBar.classList.add('visible');
                 elements.saveBar.classList.remove('saved');
+                elements.saveBtn.disabled = false;
                 updateTimePreviews();
             });
         }
@@ -208,17 +210,28 @@ function clearCache() {
     });
 }
 
-function showSaveStatus() {
-    elements.saveBar.classList.add('saved'); // Switch to "Saved" message
+// Show save feedback
+function saveSettings() {
+    elements.saveBtn.disabled = true;
+    const options = getSettingsFromUI();
 
-    // Hide bar after delay
+    chrome.storage.local.set({ options }, () => {
+        showSaveStatus();
+    });
+}
+
+function showSaveStatus() {
+    // Instant hide without animation
+    elements.saveBar.style.transition = 'none';
+    elements.saveBar.classList.remove('visible');
+
+    // Reset state immediately (next tick)
     setTimeout(() => {
-        elements.saveBar.classList.remove('visible');
-        // Reset state after hidden
-        setTimeout(() => {
-            elements.saveBar.classList.remove('saved');
-        }, 300);
-    }, 2000);
+        elements.saveBar.classList.remove('saved');
+        elements.saveBtn.disabled = false;
+        // Restore transition for next appearance
+        elements.saveBar.style.transition = '';
+    }, 50);
 }
 
 // Time Conversion Helper
