@@ -3,7 +3,7 @@
 GIST LMS(Coursemos)의 사용자 경험을 향상시키는 Chrome/Edge 확장 프로그램입니다.
 
 ## 설치
-- [Chrome Web Store](https://chromewebstore.google.com/detail/kbdhldgmmjdbobdhjjipmnofnaeahdeh)에서 다운로드
+- [Chrome Web Store](https://chromewebstore.google.com/detail/oekalaanipfieieiibilhfjcoebfaabc)에서 다운로드
 - 혹은 우측 [Releases](https://github.com/enc2586/csmsplus/releases)에서 다운로드
 
 ## 주요 기능
