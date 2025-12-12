@@ -92,9 +92,8 @@
         // Handler for data updates
         const handleDataUpdate = (data, error = null) => {
             renderAllContainers(id, data, error);
-            if (data) {
-                Dashboard.updateAssignmentData(id, data);
-            }
+            // Always notify dashboard even if data is null (error), so it counts as "loaded"
+            Dashboard.updateAssignmentData(id, data);
         };
 
 
