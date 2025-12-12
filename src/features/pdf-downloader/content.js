@@ -161,7 +161,7 @@
         const imageURL = `${baseURL}/${pageNum}.png`;
 
         try {
-          updateProgress(pageNum, pageNum + 1, `Downloading page ${pageNum}...`);
+          updateProgress(pageNum, pageNum + 1, `Scanning page ${pageNum}...`);
 
           // Use background script to bypass CORS
           const response = await new Promise((resolve, reject) => {
