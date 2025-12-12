@@ -27,11 +27,7 @@ GIST LMS(Coursemos)의 사용자 경험을 향상시키는 Chrome/Edge 확장 �
 이 프로젝트는 기능별로 모듈화된 구조를 가지고 있습니다.
 
 ```bash
-# 레포지토리 클론
-git clone [repository-url]
-
-# 의존성 설치 (필요시)
-# 현재는 바닐라 JS 기반으로 별도 npm install이 필요 없습니다.
+git clone https://github.com/enc2586/csmsplus
 ```
 
 ### 빌드 및 로드
