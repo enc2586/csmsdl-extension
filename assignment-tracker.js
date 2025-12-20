@@ -134,7 +134,7 @@
         let chipClass = 'status-default';
 
         if (isSubmitted) {
-            chipText = '제출함';
+            chipText = '제출완료';
             chipClass = 'status-submitted';
         } else if (dueDate) {
             const diffMs = dueDate - now;
@@ -143,7 +143,7 @@
             if (diffMs < 0) {
                 chipText = '마감지남';
                 chipClass = 'status-overdue';
-            } else if (diffHours <= 24) {
+            } else if (diffHours <= 72) {
                 chipText = '마감임박';
                 chipClass = 'status-warning';
             }
@@ -214,7 +214,7 @@
         let chipClass = 'status-default';
 
         if (isSubmitted) {
-            chipText = '제출함';
+            chipText = '제출완료';
             chipClass = 'status-submitted';
         } else if (dueDate) {
             const diffMs = dueDate - now;
@@ -223,7 +223,7 @@
             if (diffMs < 0) {
                 chipText = '마감지남';
                 chipClass = 'status-overdue';
-            } else if (diffHours <= 24) {
+            } else if (diffHours <= 72) {
                 chipText = '마감임박';
                 chipClass = 'status-warning';
             }
@@ -246,7 +246,7 @@
     }
 
     // Fetch Assignment Details
-    async function fetchAssignmentDetails(url, id, containerUrl) {
+    async function fetchAssignmentDetails(url, id, containerUrl, courseId) {
         try {
             // credentials: 'include' ensures cookies are sent with the request
             const response = await fetch(url, { credentials: 'include' });
@@ -384,6 +384,7 @@
 
             return {
                 id,
+                courseId,
                 title: assignmentTitle,
                 content: assignmentContent,
                 deadline: dueDate,
@@ -529,28 +530,12 @@
         const assignments = Object.values(dashboardState.assignments);
         const total = assignments.length;
 
-        // Show loading state if still loading initial data
-        if (dashboardState.isLoading && dashboardState.loadedCount < dashboardState.totalCount) {
-            container.innerHTML = `
-                <div class="content">
-                    <div class="dashboard-header">
-                        <span>과제 개요</span>
-                    </div>
-                    <div class="dashboard-loading">
-                        <span class="assignment-spinner"></span>
-                        <span>과제 정보를 불러오는 중...</span>
-                    </div>
-                </div>
-            `;
-            return;
-        }
-
         let completed = 0;
         let urgentList = [];
         let overdueList = [];
 
         const now = new Date();
-        const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+        const urgentThresholdMs = 72 * 60 * 60 * 1000; // 72 hours
 
         assignments.forEach(a => {
             if (a.isSubmitted) {
@@ -561,7 +546,7 @@
                     const diff = dueDate - now;
                     if (diff < 0) {
                         overdueList.push({ ...a, diff });
-                    } else if (diff < oneWeekMs) {
+                    } else if (diff <= urgentThresholdMs) {
                         urgentList.push({ ...a, diff });
                     }
                 }
@@ -572,11 +557,13 @@
         overdueList.sort((a, b) => b.diff - a.diff);
 
         // 3. Render HTML
-        const remaining = total - completed;
+        const urgentAndOverdue = urgentList.length + overdueList.length;
+        const remaining = total - completed - urgentAndOverdue;
 
         // Header - Simplified
         let html = `
       <div class="content">
+        <div class="dashboard-divider"></div>
         <div class="dashboard-header">
           <span>과제 개요</span>
           <button class="dashboard-settings-btn" id="dashboard-settings-btn" title="설정">
@@ -590,11 +577,15 @@
         <div class="dashboard-stats">
           <div class="stat-item">
             <div class="stat-value" style="color: #2e7d32">${completed}</div>
-            <div class="stat-label">완료한 과제</div>
+            <div class="stat-label">완료</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value" style="color: #c62828">${remaining}</div>
-            <div class="stat-label">남은 과제</div>
+            <div class="stat-value" style="color: #c62828">${urgentAndOverdue}</div>
+            <div class="stat-label">임박/지각</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" style="color: #757575">${remaining}</div>
+            <div class="stat-label">남음</div>
           </div>
         </div>
     `;
@@ -609,7 +600,7 @@
          </div>
        `;
         } else {
-            html += `<div class="task-list-title">남은 과제</div>
+            html += `<div class="task-list-title">임박/지각 과제</div>
                 <div class="dashboard-task-list">`;
 
             itemsToShow.forEach(item => {
@@ -759,9 +750,19 @@
             if (isValid) {
                 proxyRender(infoContainer, cached);
             } else {
+                // Extract course ID from current page URL
+                const courseId = (() => {
+                    try {
+                        const params = new URLSearchParams(window.location.search);
+                        return params.get('id') || null;
+                    } catch (e) {
+                        return null;
+                    }
+                })();
+
                 // Fetch
                 enqueueFetch(async () => {
-                    const data = await fetchAssignmentDetails(href, id);
+                    const data = await fetchAssignmentDetails(href, id, href, courseId);
                     if (data) {
                         // Update UI
                         proxyRender(infoContainer, data);

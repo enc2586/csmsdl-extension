@@ -1,0 +1,123 @@
+/* Course Assignment Statistics on Main Page */
+
+/* Make sure the parent div has relative positioning */
+.progress_courses .course_lists ul>li>div {
+    position: relative !important;
+}
+
+.course-assignment-stats {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-end;
+    z-index: 10;
+    text-decoration: none;
+    color: inherit;
+    opacity: 0;
+    animation: fadeIn 0.4s ease-out forwards;
+    transition: opacity 0.2s;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+.course-assignment-stats:hover {
+    opacity: 0.85;
+}
+
+.course-assignment-stats .stat-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.course-assignment-stats .stat-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.course-assignment-stats .stat-value {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 16px;
+    text-align: right;
+}
+
+/* Loading state */
+.stats-loading {
+    font-size: 11px;
+    color: #999;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+/* Color coding for stats */
+.stat-completed .stat-value {
+    color: #2e7d32;
+    /* Green */
+}
+
+.stat-urgent .stat-value {
+    color: #d32f2f;
+    /* Red */
+}
+
+.stat-remaining .stat-value {
+    color: #9e9e9e;
+    /* Gray */
+}
+
+/* Special styling for urgent items with count > 0 */
+.stat-urgent.has-urgent .stat-label {
+    color: #fff;
+    background-color: #d32f2f;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    animation: blink 1.5s ease-out infinite;
+}
+
+.stat-urgent.has-urgent .stat-value {
+    color: #d32f2f;
+    animation: blink 1.5s ease-out infinite;
+}
+
+/* Blinking animation: 1.2s visible (80%), 0.3s fade (20%) */
+@keyframes blink {
+
+    0%,
+    80% {
+        opacity: 1;
+    }
+
+    90%,
+    100% {
+        opacity: 0.3;
+    }
+}
+
+/* Hide on small screens (viewport width <= 50%) */
+@media (max-width: 960px) {
+    .course-assignment-stats {
+        display: none !important;
+    }
+}

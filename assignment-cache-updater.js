@@ -148,10 +148,23 @@
       }
     }
 
+    // Extract course ID from URL parameters
+    const getCourseId = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        // Try to get from course parameter first (if we're on assignment page, there might be a course param)
+        // Otherwise, we might not have it on the assignment page itself
+        return params.get('course') || null;
+      } catch (e) {
+        return null;
+      }
+    };
+
     // Create cache object
     const cacheKey = `assignment_${assignmentId}`;
     const cacheData = {
       id: assignmentId,
+      courseId: getCourseId(),
       title: assignmentTitle,
       content: assignmentContent,
       deadline: dueDate,

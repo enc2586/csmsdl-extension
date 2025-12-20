@@ -168,6 +168,12 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* Dashboard Divider - separates dashboard from content above */
+.dashboard-divider {
+  height: 1px;
+  background-color: #e1e1e1;
+  margin-bottom: 15px;
+}
 
 .dashboard-header {
   /* Match task-list-title styling */

@@ -41,6 +41,18 @@
     },
     {
       "matches": [
+        "https://lms.gist.ac.kr/",
+        "https://lms.gist.ac.kr/index.php*"
+      ],
+      "js": [
+        "course-list-parser.js"
+      ],
+      "css": [
+        "course-stats-styles.css"
+      ]
+    },
+    {
+      "matches": [
         "https://lms.gist.ac.kr/mod/assign/view.php*"
       ],
       "js": [
