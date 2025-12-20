@@ -33,7 +33,12 @@
         "https://lms.gist.ac.kr/course/view.php*"
       ],
       "js": [
-        "assignment-tracker.js"
+        "tracker-config.js",
+        "tracker-utils.js",
+        "tracker-api.js",
+        "tracker-ui.js",
+        "tracker-dashboard.js",
+        "tracker-main.js"
       ],
       "css": [
         "assignment-styles.css"
